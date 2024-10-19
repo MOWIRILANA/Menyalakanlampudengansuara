@@ -1,28 +1,35 @@
-#define RELAY_PIN 23
-#define SENSOR_PIN 22 // ESP32 pin GPIO18 connected to the OUT pin of the sound sensor
+#define RELAY_PIN 23    // Pin untuk relay atau lampu
+#define SENSOR_PIN 22   // Pin sensor suara
 
-int lastState = HIGH;  // the previous state from the input pin
-int currentState;      // the current reading from the input pin
+int lastState = HIGH;   // Menyimpan kondisi terakhir dari sensor suara
+int currentState;       // Menyimpan kondisi saat ini dari sensor suara
+bool lampStatus = LOW;  // Status lampu, awalnya mati
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(SENSOR_PIN, INPUT);
-  pinMode(RELAY_PIN, OUTPUT);
+  Serial.begin(9600);       
+  pinMode(SENSOR_PIN, INPUT); 
+  pinMode(RELAY_PIN, OUTPUT); 
+  digitalWrite(RELAY_PIN, LOW); 
 }
 
 void loop() {
   currentState = digitalRead(SENSOR_PIN);
 
-  if (lastState == HIGH && currentState == LOW){
-    digitalWrite(RELAY_PIN, HIGH);
-    Serial.println("The sound has been detected");
-    delay(10000);
+  // Jika suara terdeteksi (perubahan dari HIGH ke LOW)
+  if (lastState == HIGH && currentState == LOW) {
+    // Toggle status lampu (ON/OFF)
+    lampStatus = !lampStatus; 
+    
+    digitalWrite(RELAY_PIN, lampStatus); // Mengubah status lampu sesuai toggle
+    
+    if (lampStatus == HIGH) {
+      Serial.println("Lampu menyala karena suara terdeteksi");
+    } else {
+      Serial.println("Lampu mati karena suara terdeteksi");
     }
-  else if (lastState == LOW && currentState == HIGH){
-    digitalWrite(RELAY_PIN, LOW);
-    Serial.println("The sound has disappeared");
-    }
+    
+    delay(500); 
+  }
 
   lastState = currentState;
 }
-
