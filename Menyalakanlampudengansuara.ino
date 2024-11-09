@@ -1,5 +1,5 @@
-#define RELAY_PIN 23    // Pin untuk relay atau lampu
-#define SENSOR_PIN 22   // Pin sensor suara
+#define RELAY_PIN 14    // Pin untuk relay atau lampu
+#define SENSOR_PIN 22  // Pin sensor suara
 
 int lastState = HIGH;   // Menyimpan kondisi terakhir dari sensor suara
 int currentState;       // Menyimpan kondisi saat ini dari sensor suara
